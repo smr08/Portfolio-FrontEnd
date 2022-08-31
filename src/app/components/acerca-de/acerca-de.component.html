@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" *ngFor="let person of persona, let indice=index"> 
+        <span *ngIf="indice==0">
+            <!-- Button to Open the Modal -->
+            <button type="button" class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalCambiarNombre" (click)="buscarNombre(indice)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <p id="nombre"><strong>{{person.nombre}} {{person.apellido}}</strong></p>
+            <p id="titulo">- Full Stack Developer Jr.</p>
+            <p id="titulo">- Contadora Pública Argentina</p>
+        </span>
+    </div>
+    <hr>
+</div>
+
+<!-- Modal para editar nombre -->
+<div class="modal text-dark boton-editar" id="myModalCambiarNombre">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">EDITAR NOMBRE</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formAcercaDe" (ngSubmit)="editarPersona(auxId)">
+          <div class="mb-3 mt-3">
+            <label class="form-label">Nombre:</label>
+            <input type="text" class="form-control" formControlName="nombre" placeholder="Nombre" name="nombre" [ngModel]="nombreSelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Apellido:</label>
+            <input type="text" class="form-control" formControlName="apellido" placeholder="Apellido" name="apellido" [ngModel]="apellidoSelect">
+          </div>
+          <button type="submit" class="btn btn-primary">Editar</button>
+        </form>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>

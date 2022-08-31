@@ -1,0 +1,170 @@
+<div class="row">
+    <h2>Educación</h2>
+    
+    <div>
+      <button type="button" class="btn btn-dark boton-agregar" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalAddEducacion"><b>Agregar</b></button> 
+    </div>
+    
+    <div class="col-lg-11" *ngFor="let item of edu, let indice = index">
+        <div class="card mb-3">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+              <div class="col-md-1">
+                <img src= {{item.logoEstudio}} class="img-fluid" alt="LOGO">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.nombreEstudio}}</h5>
+                  <p>{{item.lugarEstudio}}</p>
+                  <p class="card-text">{{item.descripcionEstudio}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEditEducacion" (click)="buscarEducacion(indice)">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEliminarEducacion" (click)="buscarEducacion(indice)">
+            <i class="bi bi-trash"></i>
+          </button>
+    </div> 
+</div>  
+
+<!-- Modal para agregar educacion -->
+<div class="modal text-dark" id="myModalAddEducacion">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">AGREGAR EDUCACION</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form method="POST" enctype="multipart/form-data" [formGroup]="formuedu" (ngSubmit)="agregarEducacion()">
+          
+          <div class="mb-3 mt-3">
+            <label class="form-label">Nombre del establecimiento:</label>
+            <input type="text" class="form-control" formControlName="lugarEstudio" [ngClass]="{'is-invalid': LugarEstudio?.errors && LugarEstudio?.touched, 'is-valid' : !LugarEstudio?.errors && LugarEstudio?.touched}" placeholder="Lugar en donde se realizo el estudio" name="lugarEstudio" [(ngModel)]="lugarEstudio" required>
+            <div *ngIf="LugarEstudio?.errors && LugarEstudio?.touched">
+              <p *ngIf="LugarEstudio?.hasError('required')" class= "text-danger">
+                El establecimiento es requerido
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Titulo Carrera:</label>
+            <input type="text" class="form-control" formControlName="nombreEstudio" [ngClass]="{'is-invalid': NombreEstudio?.errors && NombreEstudio?.touched, 'is-valid' : !NombreEstudio?.errors && NombreEstudio?.touched}" placeholder="Nombre de la carrera" name="nombreEstudio" [(ngModel)]="nombreEstudio" required>
+            <div *ngIf="NombreEstudio?.errors && NombreEstudio?.touched">
+              <p *ngIf="NombreEstudio?.hasError('required')" class= "text-danger">
+                El nombre de la carrera es requerido
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Descripcion de la carrera:</label>
+            <input type="text" class="form-control" formControlName="descripcionEstudio" [ngClass]="{'is-invalid': DescripcionEstudio?.errors && DescripcionEstudio?.touched, 'is-valid' : !DescripcionEstudio?.errors && DescripcionEstudio?.touched}" placeholder="Descripcion de la carrera" name="descripcionEstudio" [(ngModel)]="descripcionEstudio" required>
+            <div *ngIf="DescripcionEstudio?.errors && DescripcionEstudio?.touched">
+              <p *ngIf="DescripcionEstudio?.hasError('required')" class= "text-danger">
+                La descripción es requerida
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Logo del establecimiento:</label>
+            <input type="text" class="form-control" formControlName="logoEstudio" [ngClass]="{'is-invalid': LogoEstudio?.errors && LogoEstudio?.touched, 'is-valid' : !LogoEstudio?.errors && LogoEstudio?.touched}" placeholder="Logo del establecimiento educativo" name="logoEstudio" accept=".jpg, .jpeg, .png" [(ngModel)]="logoEstudio" required>
+            <div *ngIf="LogoEstudio?.errors && LogoEstudio?.touched">
+              <p *ngIf="LogoEstudio?.hasError('required')" class= "text-danger">
+                La imagen es requerida
+              </p>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Agregar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar educacion -->
+<div class="modal text-dark boton-editar" id="myModalEditEducacion">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">EDITAR EDUCACION</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formuedu" (ngSubmit)="editarEducacion(auxId)">
+          <div class="mb-3 mt-3">
+            <label class="form-label">Nombre del establecimiento:</label>
+            <input type="text" class="form-control" formControlName="lugarEstudio" placeholder="Lugar en donde se realizo el estudio" name="lugarEstudio" [ngModel]="lugarESelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Titulo Carrera:</label>
+            <input type="text" class="form-control" formControlName="nombreEstudio" placeholder="Nombre de la carrera" name="nombreEstudio" [ngModel]="nombreESelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Descripcion de la carrera:</label>
+            <input type="text" class="form-control" formControlName="descripcionEstudio" placeholder="Descripcion de la carrera" name="descripcionEstudio" [ngModel]="descripcionESelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Logo del establecimiento:</label>
+            <input type="text" class="form-control" formControlName="logoEstudio" placeholder="Logo del establecimiento educativo" name="logoEstudio" accept=".jpg, .jpeg, .png" [ngModel]="logoESelect">
+          </div>
+          <button type="submit" class="btn btn-primary">Editar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar educacion -->
+<div class="modal text-dark boton-eliminar" id="myModalEliminarEducacion">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"> ELIMINAR EDUCACION? </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formuedu" (ngSubmit)="borrarEducacion(auxId)">
+          <h4>{{lugarESelect}}</h4>
+          <button type="submit" class="btn btn-primary">Eliminar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+

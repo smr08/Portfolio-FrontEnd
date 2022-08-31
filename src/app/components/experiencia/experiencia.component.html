@@ -1,0 +1,170 @@
+<div class="row">
+    <h2>Experiencia Laboral</h2>
+    <div>
+      <button type="button" class="btn btn-dark boton-agregar" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalAdd"><b>Agregar</b></button> 
+    </div>
+    
+    <div class="col-lg-11" *ngFor="let item of expe, let indice = index">
+        <div class="card mb-3">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+              <div class="col-md-1">
+                <img src= {{item.logoTrabajo}} class="img-fluid" alt="LOGO">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.nombreTrabajo}}</h5>
+                  <p>{{item.fechaTrabajo}}</p>
+                  <p class="card-text">{{item.descripcionTrabajo}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEdit" (click)="buscarExperiencia(indice)">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEliminar" (click)="buscarExperiencia(indice)">
+            <i class="bi bi-trash"></i>
+          </button>
+    </div>
+    
+</div>  
+
+<!-- Modal para agregar expereincia -->
+<div class="modal text-dark" id="myModalAdd">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">AGREGAR UNA EXPERIENCIA</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form method="POST" enctype="multipart/form-data" [formGroup]="formuexpe" (ngSubmit)="agregarExperiencia()">
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Nombre del lugar del trabajo:</label>
+            <input type="text" class="form-control" formControlName="nombreTrabajo" [ngClass]="{'is-invalid': NombreTrabajo?.errors && NombreTrabajo?.touched, 'is-valid' : !NombreTrabajo?.errors && NombreTrabajo?.touched}" placeholder="Lugar del trabajo" name="nombreTrabajo" [(ngModel)]="nombreTrabajo" required>
+            <div *ngIf="NombreTrabajo?.errors && NombreTrabajo?.touched">
+              <p *ngIf="NombreTrabajo?.hasError('required')" class= "text-danger">
+                El lugar es requerido
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Fecha del trabajo:</label>
+            <input type="text" class="form-control" formControlName="fechaTrabajo" [ngClass]="{'is-invalid': FechaTrabajo?.errors && FechaTrabajo?.touched, 'is-valid' : !FechaTrabajo?.errors && FechaTrabajo?.touched}" placeholder="Fecha del trabajo" name="fechaTrabajo" [(ngModel)]="fechaTrabajo" required>
+            <div *ngIf="FechaTrabajo?.errors && FechaTrabajo?.touched">
+              <p *ngIf="FechaTrabajo?.hasError('required')" class= "text-danger">
+                La fecha es requerida
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Descripcion del trabajo:</label>
+            <input type="text" class="form-control" formControlName="descripcionTrabajo" [ngClass]="{'is-invalid': DescripcionTrabajo?.errors && DescripcionTrabajo?.touched, 'is-valid' : !DescripcionTrabajo?.errors && DescripcionTrabajo?.touched}" placeholder="Descripcion del puesto" name="descripcionTrabajo" [(ngModel)]="descripcionTrabajo" required>
+            <div *ngIf="DescripcionTrabajo?.errors && DescripcionTrabajo?.touched">
+              <p *ngIf="DescripcionTrabajo?.hasError('required')" class= "text-danger">
+                La descripcion es requerida
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Logo del trabajo:</label>
+            <input type="text" class="form-control" formControlName="logoTrabajo" [ngClass]="{'is-invalid': LogoTrabajo?.errors && LogoTrabajo?.touched, 'is-valid' : !LogoTrabajo?.errors && LogoTrabajo?.touched}" placeholder="Logo del trabajo" name="logoTrabajo" accept=".jpg, .jpeg, .png" [(ngModel)]="logoTrabajo" required>
+            <div *ngIf="LogoTrabajo?.errors && LogoTrabajo?.touched">
+              <p *ngIf="LogoTrabajo?.hasError('required')" class= "text-danger">
+                El logo es requerido
+              </p>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Agregar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar expereincia -->
+<div class="modal text-dark boton-editar" id="myModalEdit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">EDITAR EXPERIENCIA</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formuexpe" (ngSubmit)="editarExperiencia(auxId)">
+          <div class="mb-3 mt-3">
+            <label class="form-label">Nombre del trabajo:</label>
+            <input type="text" class="form-control" formControlName="nombreTrabajo" placeholder="Lugar del trabajo" name="nombreTrabajo" [ngModel]="nombreTSelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Fecha del trabajo:</label>
+            <input type="text" class="form-control" formControlName="fechaTrabajo" placeholder="Fecha del trabajo" name="fechaTrabajo" [ngModel]="fechaTSelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Descripcion del trabajo:</label>
+            <input type="text" class="form-control" formControlName="descripcionTrabajo" placeholder="Descripcion del trabajo" name="descripcionTrabajo" [ngModel]="descripcionTSelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Logo del trabajo:</label>
+            <input type="text" class="form-control" formControlName="logoTrabajo" placeholder="Logo del trabajo" name="logoTrabajo" [ngModel]="logoTSelect">
+          </div>
+          <button type="submit" class="btn btn-primary">Editar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar expereincia -->
+<div class="modal text-dark boton-eliminar" id="myModalEliminar">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"> ELIMINAR EXPERIENCIA? </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formuexpe" (ngSubmit)="borrarExperiencia(auxId)">
+          <h4>{{nombreTSelect}}</h4>
+          <button type="submit" class="btn btn-primary">Eliminar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>

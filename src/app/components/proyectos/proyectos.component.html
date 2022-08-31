@@ -1,0 +1,174 @@
+
+<div class="row">
+  
+  <h2>Proyectos Realizados</h2>
+  <div class="col-xs-12 col-sm-8 col-md-8 col-lg-11">
+
+    <div>
+      <button type="button" class="btn btn-dark boton-agregar" *ngIf="isLogged" data-bs-toggle="modal"
+        data-bs-target="#myModalAddProyectos"><b>Agregar</b></button>
+    </div>
+    
+    <div class="contenedor" *ngFor="let item of proye, let indice = index">
+      <div class="col-sm-12 col-md-7 col-lg-7 parte1">
+        <h3>{{item.nombreProyecto}}</h3>
+        <p>{{item.descripcionProyecto}}</p>
+        <a href=""></a>
+      </div>
+    
+      <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEditProyecto"
+        (click)="buscarProyecto(indice)">
+        <i class="bi bi-pencil"></i>
+      </button>
+      <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEliminarProyecto"
+        (click)="buscarProyecto(indice)">
+        <i class="bi bi-trash"></i>
+      </button>
+    
+      <div class="col-sm-12 col-md-3 col-lg-4 offset-md-1 offset-lg-1 parte2">
+        <img src={{item.imgProyecto}} alt="imagenPortfolio" class="img-fluid img-proyecto">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal para agregar proyectos -->
+<div class="modal text-dark" id="myModalAddProyectos">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">AGREGAR PROYECTO</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form method="POST" enctype="multipart/form-data" [formGroup]="formuproye" (ngSubmit)="agregarProyecto()">
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Nombre Proyecto:</label>
+            <input type="text" class="form-control" formControlName="nombreProyecto" [ngClass]="{'is-invalid': NombreProyecto?.errors && NombreProyecto?.touched, 'is-valid' : !NombreProyecto?.errors && NombreProyecto?.touched}" placeholder="Proyecto" name="nombreProyecto" [(ngModel)]="nombreProyecto" required>
+            <div *ngIf="NombreProyecto?.errors && NombreProyecto?.touched">
+              <p *ngIf="NombreProyecto?.hasError('required')" class= "text-danger">
+                El nombre es requerido
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Descripcion Proyecto:</label>
+            <input type="text" class="form-control" formControlName="descripcionProyecto" [ngClass]="{'is-invalid': DescripcionProyecto?.errors && DescripcionProyecto?.touched, 'is-valid' : !DescripcionProyecto?.errors && DescripcionProyecto?.touched}" placeholder="Descripcion del proyecto" name="descripcionProyecto" [(ngModel)]="descripcionProyecto" required>
+            <div *ngIf="DescripcionProyecto?.errors && DescripcionProyecto?.touched">
+              <p *ngIf="DescripcionProyecto?.hasError('required')" class= "text-danger">
+                La descripcion es requerida
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Link del Proyecto:</label>
+            <input type="text" class="form-control" formControlName="linkProyecto" [ngClass]="{'is-invalid': LinkProyecto?.errors && LinkProyecto?.touched, 'is-valid' : !LinkProyecto?.errors && LinkProyecto?.touched}" placeholder="Link" name="linkProyecto" [(ngModel)]="linkProyecto" required>
+            <div *ngIf="LinkProyecto?.errors && LinkProyecto?.touched">
+              <p *ngIf="LinkProyecto?.hasError('required')" class= "text-danger">
+                El link es requerido
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label class="form-label">Imagen:</label>
+            <input type="text" class="form-control" formControlName="imgProyecto" [ngClass]="{'is-invalid': ImgProyecto?.errors && ImgProyecto?.touched, 'is-valid' : !ImgProyecto?.errors && ImgProyecto?.touched}" placeholder="Imagen del proyecto" name="imgProyecto" accept=".jpg, .jpeg, .png" [(ngModel)]="imgProyecto" required>
+            <div *ngIf="ImgProyecto?.errors && ImgProyecto?.touched">
+              <p *ngIf="ImgProyecto?.hasError('required')" class= "text-danger">
+                La imagen es requerida
+              </p>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Agregar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal para editar expereincia -->
+<div class="modal text-dark boton-editar" id="myModalEditProyecto">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">EDITAR HABILIDAD</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formuproye" (ngSubmit)="editarProyecto(auxId)">
+          <div class="mb-3 mt-3">
+            <label class="form-label">Nombre proyecto:</label>
+            <input type="text" class="form-control" formControlName="nombreProyecto" placeholder="Proyecto" name="nombreProyecto" [ngModel]="nombrePSelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Descripcion Proyecto:</label>
+            <input type="text" class="form-control" formControlName="descripcionProyecto" placeholder="Descripcion del Proyecto" name="descripcionProyecto" [ngModel]="descripcionPSelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Link proyecto:</label>
+            <input type="text" class="form-control" formControlName="linkProyecto" placeholder="Link Proyecto" name="linkProyecto" [ngModel]="linkPSelect">
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">Imagen:</label>
+            <input type="text" class="form-control" formControlName="imgProyecto" placeholder="Imagen del proyecto" name="imgProyecto" accept=".jpg, .jpeg, .png" [ngModel]="imgPSelect">
+          </div>
+          <button type="submit" class="btn btn-primary">Editar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal para eliminar expereincia -->
+<div class="modal text-dark boton-eliminar" id="myModalEliminarProyecto">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"> ELIMINAR PROYECTO? </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formuproye" (ngSubmit)="borrarProyecto(auxId)">
+          <h4>{{nombrePSelect}}</h4>
+          <button type="submit" class="btn btn-primary">Eliminar</button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+  

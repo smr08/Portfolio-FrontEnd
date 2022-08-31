@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-11" id="acercade" *ngFor="let item of acerca, let indice = index">
+        <h2>Acerca de mí</h2>
+        
+        <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEditAcercaDeMi" (click)="buscarAcercaDeMi(indice)">
+          <i class="bi bi-pencil"></i>
+        </button>
+    
+        <p>{{item.descripcion}}</p>
+
+        
+    </div> 
+
+</div>
+
+<!-- Modal para editar acerca de mi -->
+<div class="modal text-dark boton-editar" id="myModalEditAcercaDeMi">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">EDITAR</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form [formGroup]="formuacerca" (ngSubmit)="editarAcercaDeMi(auxId)">
+            
+            <div class="mb-3 mt-3">
+              <label class="form-label">Descripcion:</label>
+              <input type="text" class="form-control" formControlName="descripcion" placeholder="Descripcion acerca de mi" name="descripcion" [ngModel]="descripcionSelect">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Editar</button>
+          </form>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+
+

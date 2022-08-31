@@ -1,0 +1,28 @@
+
+img {
+    width: 40%;
+    border-radius: 50%;
+}
+
+@media (min-width: 576px) {
+    #fotodeperfil {
+        position: absolute;
+        float: left;
+        width: 15%;
+        left: 3.5%;
+        top: 400px;
+        box-shadow: 3px 3px 3px rgb(59, 59, 59);
+    
+    }
+}
+@media (max-width: 575px) {
+    #fotodeperfil {
+        position: absolute;
+        float: left;
+        width: 34%;
+        left: 3%;
+        top: 400px;
+        box-shadow: 3px 3px 3px rgb(59, 59, 59);
+    }
+}
+

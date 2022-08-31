@@ -1,0 +1,50 @@
+
+.row {
+    color: var( --text-color-secondary );
+    background-color: var( --surface-d );
+}
+
+.contenedor {
+    width: auto;
+}
+
+.parte1, .parte2 {
+    display: inline-block;
+    text-align: justify;
+}
+
+.img-proyecto {
+    box-shadow: 10px 10px 30px black;
+    width: auto;
+    height: auto;
+    position: relative;
+    margin-bottom: 30px;
+
+    
+}
+
+h2 {
+    margin-top: 15px;
+}
+
+.boton-agregar {
+    margin-bottom: 5px;
+    font-size: 10px;
+    color: black;
+    font-family: var( --font-family);
+    background-color: var( --primary-500 );
+}
+
+.boton {
+   
+    float: right;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    font-size: 10px;
+    font-family: var( --font-family);
+}
+.imagen{
+    width: 15px;
+    height: 15px;
+    
+}

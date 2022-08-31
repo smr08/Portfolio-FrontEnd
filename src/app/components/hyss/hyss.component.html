@@ -1,0 +1,161 @@
+
+<div class="row">
+    <h2>Hard & Soft Skills</h2>
+
+    <div>
+        <button type="button" class="btn btn-dark boton-agregar" *ngIf="isLogged" data-bs-toggle="modal"
+            data-bs-target="#myModalAddHabilidades"><b>Agregar</b></button>
+    </div>
+
+    <div class="text-center col-sm-4 col-md-4 col-lg-4" *ngFor="let item of habil, let indice = index">
+        <circle-progress
+        [percent]='item.porcentajeHaabilidad'
+        [radius]="100"
+        [imageSrc]='item.logoHabilidad'
+        [showImage]="true"
+        [imageHeight]="80"
+        [imageWidth]="80"
+        [showUnits]="false"
+        [showSubtitle]="false"
+        [outerStrokeWidth]="10"
+        [innerStrokeWidth]="3"
+        [outerStrokeColor]="'#5eead480'"
+        [innerStrokeColor]="'#5EEAD4'"
+        [animation]="true"
+        [animationDuration]="500"
+        >{{item.nombreHabilidad}}</circle-progress>
+
+        <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEditHabilidades" (click)="buscarHabilidad(indice)">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="btn btn-outline-light boton" *ngIf="isLogged" data-bs-toggle="modal" data-bs-target="#myModalEliminarHabilidades" (click)="buscarHabilidad(indice)">
+          <i class="bi bi-trash"></i>
+        </button>
+    </div>
+</div>
+
+
+<!-- Modal para agregar habilidad -->
+<div class="modal text-dark" id="myModalAddHabilidades">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">AGREGAR HABILIDAD</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form method="POST" enctype="multipart/form-data" [formGroup]="formuhabi" (ngSubmit)="agregarHabilidad()">
+
+            <div class="mb-3 mt-3">
+              <label class="form-label">Nombre habilidad:</label>
+              <input type="text" class="form-control" formControlName="nombreHabilidad" [ngClass]="{'is-invalid': NombreHabilidad?.errors && NombreHabilidad?.touched, 'is-valid' : !NombreHabilidad?.errors && NombreHabilidad?.touched}" placeholder="Habilidad" name="nombreHabilidad" [(ngModel)]="nombreHabilidad" required>
+              <div *ngIf="NombreHabilidad?.errors && NombreHabilidad?.touched">
+                <p *ngIf="NombreHabilidad?.hasError('required')" class= "text-danger">
+                  El nombre es requerido
+                </p>
+              </div>
+            </div>
+
+            <div class="mb-3 mt-3">
+              <label class="form-label">Porcentaje habilidad:</label>
+              <input type="number" class="form-control" formControlName="porcentajeHaabilidad" [ngClass]="{'is-invalid': PorcentajeHabilidad?.errors && PorcentajeHabilidad?.touched, 'is-valid' : !PorcentajeHabilidad?.errors && PorcentajeHabilidad?.touched}" placeholder="Porcentaje manejo de habilidad" name="porcentajeHaabilidad" [(ngModel)]="porcentajeHaabilidad" required>
+              <div *ngIf="PorcentajeHabilidad?.errors && PorcentajeHabilidad?.touched">
+                <p *ngIf="PorcentajeHabilidad?.hasError('required')" class= "text-danger">
+                  El porcentaje es requerido
+                </p>
+              </div>
+            </div>
+
+            <div class="mb-3 mt-3">
+              <label class="form-label">Imagen:</label>
+              <input type="text" class="form-control" formControlName="logoHabilidad" [ngClass]="{'is-invalid':LogoHabilidad?.errors && LogoHabilidad?.touched, 'is-valid' : !LogoHabilidad?.errors && LogoHabilidad?.touched}" placeholder="Imagen representativa de la habilidad" name="logoHabilidad" accept=".jpg, .jpeg, .png" [(ngModel)]="logoHabilidad" required>
+              <div *ngIf="LogoHabilidad?.errors && LogoHabilidad?.touched">
+                <p *ngIf="LogoHabilidad?.hasError('required')" class= "text-danger">
+                  La imagen es requerida
+                </p>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Agregar</button>
+          </form>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal para editar habilidad -->
+  <div class="modal text-dark boton-editar" id="myModalEditHabilidades">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">EDITAR HABILIDAD</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form [formGroup]="formuhabi" (ngSubmit)="editarHabilidad(auxId)">
+            <div class="mb-3 mt-3">
+              <label class="form-label">Nombre habilidad:</label>
+              <input type="text" class="form-control" formControlName="nombreHabilidad" placeholder="Habilidad" name="nombreHabilidad" [ngModel]="nombreHSelect">
+            </div>
+            <div class="mb-3 mt-3">
+              <label class="form-label">Porcentaje habilidad:</label>
+              <input type="number" class="form-control" formControlName="porcentajeHaabilidad" placeholder="Porcentaje manejo de habilidad" name="porcentajeHaabilidad" [ngModel]="porcentajeHSelect">
+            </div>
+            <div class="mb-3 mt-3">
+              <label class="form-label">Imagen:</label>
+              <input type="text" class="form-control" formControlName="logoHabilidad" placeholder="Imagen representativa de la habilidad" name="logoHabilidad" accept=".jpg, .jpeg, .png" [ngModel]="logoHSelect">
+            </div>
+            <button type="submit" class="btn btn-primary">Editar</button>
+          </form>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal para eliminar habilidad -->
+  <div class="modal text-dark boton-eliminar" id="myModalEliminarHabilidades">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title"> ELIMINAR Habilidad? </h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form [formGroup]="formuhabi" (ngSubmit)="borrarHabilidad(auxId)">
+            <h4>{{nombreHSelect}}</h4>
+            <button type="submit" class="btn btn-primary">Eliminar</button>
+          </form>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>

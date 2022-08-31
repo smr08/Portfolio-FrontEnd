@@ -1,0 +1,10 @@
+.card{
+    margin-top: -35px;
+    font-family: var( --font-family);
+    
+}
+
+button{
+    background-color: var( --primary-500 );
+}
+

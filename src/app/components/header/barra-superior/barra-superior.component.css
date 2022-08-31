@@ -1,0 +1,29 @@
+
+.contenedor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var( --surface-b );
+    border-radius: 5px;
+}
+.redes{
+    margin-right: 10px;
+}
+
+.ap{
+    text-align: left;
+    
+}
+
+#logoAp {
+    width: 100px;
+}
+
+img {
+    width: 30px;
+}
+
+button {
+    font-size: 15px;
+}
+

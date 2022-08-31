@@ -1,0 +1,30 @@
+.row {
+    padding: 5px;
+    padding-top:8%
+}
+
+
+#nombre {
+    
+    margin-left: -15%;
+    font-size: 20px;
+    text-align: center;
+}
+
+#titulo {
+    font-size: 15px;
+    margin-left: 5%;
+}
+
+.boton {
+   
+    float: right;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    font-size: 10px;
+    font-family: var( --font-family);
+}
+
+
+
+
