@@ -8,7 +8,7 @@ import { AcercaDeMi } from '../model/acerca-de-mi';
 })
 export class AcercaDeMiService {
 
-  acercaURL = 'http://localhost:8080/acercademi/';
+  acercaURL = 'https://backendrossi.herokuapp.com/acercademi/';
 
   constructor(private http: HttpClient) { }
 
